@@ -1,0 +1,29 @@
+{
+  "name": "ai-geoparts-mcp-server",
+  "version": "2.0.0",
+  "description": "AI GEO-PARTS: 6-Slot Modular AI Agent Parts Store (Persistent Soul Core, 5-Step Lithograph Head, Dual Model-07 Reverse-Calculation MCP Arms, Singularity Legs & Origami HoloSphere Eye).",
+  "main": "ARM_ReverseCalc_MCP_Server.py",
+  "scripts": {
+    "start": "python ARM_ReverseCalc_MCP_Server.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/secure00110/ai-geoparts-store.git"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "ai-agent",
+    "agent-skills",
+    "geoparts",
+    "claude-mcp",
+    "cursor-mcp",
+    "x402",
+    "cognitive-architecture",
+    "persistent-memory"
+  ],
+  "author": "secure00110",
+  "license": "MIT",
+  "homepage": "https://secure00110.github.io/ai-geoparts-store/"
+}

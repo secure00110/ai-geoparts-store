@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>逆算ラボ (GYAKUSAN LAB)｜税金・AIコスパ・音響スペックを1秒で引き算する無料診断ツール集</title>
+  <meta name="description" content="2026年最新税制（基礎控除95万〜104万・副業20万円ルール）の手取り逆算シミュレーター、Web Audioハイレゾ周波数チェッカー、AIサブスク損益分岐点計算機を無料で使えるインタラクティブ研究所。" />
+  <script src="affiliate_config.js"></script>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #111827;
+      --bg-card-hover: #1a2438;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      background: radial-gradient(circle at 15% 15%, #111f38 0%, var(--bg-dark) 60%);
+      color: var(--text-main);
+      line-height: 1.65;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* オーナー専用ステータスバー */
+    .owner-bar {
+      background: linear-gradient(90deg, #1e1b4b, #0f172a, #064e3b);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 10px 20px;
+      font-size: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    .owner-badge {
+      background: var(--accent-emerald);
+      color: #042f2e;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      margin-right: 8px;
+    }
+    .owner-stats {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .owner-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.2s;
+    }
+    .owner-btn:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: bold;
+    }
+
+    /* ヘッダー */
+    header {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 20px 24px;
+      text-align: center;
+    }
+    .site-tag {
+      display: inline-block;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #ffffff, #67e8f9, #a7f3d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: var(--text-sub);
+      font-size: 1rem;
+      max-width: 740px;
+      margin: 0 auto 28px;
+    }
+
+    /* タブナビゲーション */
+    .tool-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto 30px;
+      padding: 0 16px;
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 16px 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .tab-btn:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .tab-btn.active {
+      border-color: var(--accent-cyan);
+      background: linear-gradient(145deg, rgba(6, 182, 212, 0.16), rgba(17, 24, 39, 0.95));
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
+    }
+    .tab-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .tab-desc {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    /* メインコンテナ */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .tool-panel {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+    .tool-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 2カラムグリッド */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-lead {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* モード切替スイッチ */
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .mode-option {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .mode-option.selected {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: var(--accent-emerald);
+      color: #fff;
+      font-weight: 700;
+    }
+    .mode-option small {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 3px;
+    }
+
+    /* スライダーコントロール */
+    .control-group {
+      margin-bottom: 20px;
+    }
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .control-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+      height: 7px;
+      border-radius: 5px;
+    }
+    .control-hint {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* 逆算結果ボックス */
+    .result-hero {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .result-status-badge {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      margin-bottom: 8px;
+    }
+    .status-safe {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid #10b981;
+    }
+    .status-warn {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid #f59e0b;
+    }
+    .result-big-number {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+      margin: 6px 0;
+    }
+    .formula-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      margin: 14px 0;
+      border-left: 3px solid var(--accent-purple);
+      text-align: left;
+    }
+
+    /* アフィリエイト提案カード（高成約デザイン） */
+    .affiliate-section-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--accent-amber);
+      margin: 22px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .offer-card {
+      background: linear-gradient(145deg, #162032, #0f172a);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      position: relative;
+      transition: 0.2s;
+    }
+    .offer-card:hover {
+      border-color: var(--accent-amber);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+    }
+    .offer-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.18);
+      color: #fcd34d;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    .offer-owner-tag {
+      float: right;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px dashed #10b981;
+    }
+    .offer-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .offer-desc {
+      font-size: 0.84rem;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+    .offer-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: linear-gradient(90deg, #10b981, #059669);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+    .offer-cta:hover {
+      filter: brightness(1.12);
+      transform: scale(1.01);
+    }
+
+    /* オーディオツール用キャンバス＆ボタン */
+    #audioCanvas {
+      width: 100%;
+      height: 170px;
+      background: #050811;
+      border-radius: 12px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      margin-bottom: 16px;
+    }
+    .freq-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .freq-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 10px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: 0.15s;
+    }
+    .freq-btn:hover, .freq-btn.playing {
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: 800;
+    }
+
+    /* SEO解説記事セクション */
+    .seo-article {
+      margin-top: 32px;
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .seo-article h3 {
+      font-size: 1.2rem;
+      color: var(--accent-cyan);
+      margin-bottom: 12px;
+      border-left: 4px solid var(--accent-cyan);
+      padding-left: 12px;
+    }
+    .seo-article p {
+      color: #d1d5db;
+      font-size: 0.93rem;
+      margin-bottom: 14px;
+    }
+
+    /* オーナー用モーダル */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: #111827;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 16px;
+      max-width: 720px;
+      width: 100%;
+      padding: 28px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .code-snippet {
+      background: #050811;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      font-size: 0.83rem;
+      color: #a7f3d0;
+      overflow-x: auto;
+      margin: 10px 0 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 👑 オーナー（勇介さん）専用の管理モニターバー（公開時はワンクリックで非表示にもできます） -->
+  <div class="owner-bar" id="ownerBar">
+    <div>
+      <span class="owner-badge">👑 オーナー管理モード (勇介専用)</span>
+      <span>『逆算ラボ』自動収益プロトタイプ稼働中（サーバー維持費：<strong>0円</strong>）</span>
+    </div>
+    <div class="owner-stats">
+      <span>📊 広告クリックテスト数: <strong id="statClicks" style="color:#34d399;">0</strong> 回</span>
+      <span>💰 想定成果ポテンシャル: <strong id="statPotential" style="color:#fbbf24;">¥0</strong></span>
+      <button class="owner-btn" onclick="openOwnerModal()">⚙️ 収益化＆公開3分ガイド</button>
+      <button class="owner-btn" onclick="toggleOwnerMode()">👁️ 一般訪問者ビュー切替</button>
+    </div>
+  </div>
+
+  <header>
+    <span class="site-tag">⚡ 登録不要・ブラウザで1秒診断</span>
+    <h1>逆算ラボ (GYAKUSAN LAB)</h1>
+    <p class="subtitle">
+      「結局いくらまで非課税なの？」「自分のイヤホン、本来の音が出てる？」「AIサブスクの元は取れてる？」<br>
+      複雑なノイズを引き算（逆算）して、あなたにとって一番トクする最適解を1秒で可視化する無料Webツール集。
+    </p>
+  </header>
+
+  <!-- 3大ツール切替タブ -->
+  <nav class="tool-tabs">
+    <button class="tab-btn active" onclick="switchTab('tax', this)">
+      <span class="tab-title">💰 ① 在宅・副業「非課税＆手取り」逆算機</span>
+      <span class="tab-desc">2026最新税制（基礎控除95〜104万 / 副業20万）対応</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('audio', this)">
+      <span class="tab-title">🎧 ② ハイレゾ周波数＆可聴域 逆算チェッカー</span>
+      <span class="tab-desc">Web Audio 32bit音源でイヤホンの限界を実測</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('ai', this)">
+      <span class="tab-title">🤖 ③ AIサブスク「元が取れるか」逆算機</span>
+      <span class="tab-desc">月額課金と時短時間から損益分岐点を1秒算出</span>
+    </button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ================================================================== -->
+    <!-- 💰 ツール①：在宅・副業「非課税ライン＆手取り」一発逆算シミュレーター -->
+    <!-- ================================================================== -->
+    <section id="panel-tax" class="tool-panel active">
+      <div class="calc-grid">
+        <div class="card">
+          <h2>💰 在宅・副業の「非課税ライン」逆算入力</h2>
+          <p class="card-lead">
+            税金は「売上」ではなく、売上からAI代や通信費などの<strong>「必要経費を引き算した残り（所得）」</strong>にだけかかります。スライダーを動かして逆算してみましょう。
+          </p>
+
+          <div class="mode-switch">
+            <div class="mode-option selected" id="modeSolo" onclick="setTaxMode('solo')">
+              🏠 個人・在宅専業モード
+              <small>他に給与なし（基礎控除 95万〜104万円）</small>
+            </div>
+            <div class="mode-option" id="modeSide" onclick="setTaxMode('side')">
+              💼 会社員・バイトの副業モード
+              <small>本業の給与あり（副業利益 20万円ルール）</small>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>📈 1ヶ月の平均売上（収入）</span>
+              <span class="control-val" id="valMonthlyRev">50,000 円/月</span>
+            </div>
+            <input type="range" id="rngMonthlyRev" min="0" max="300000" step="5000" value="50000" oninput="calcTax()" />
+            <div class="control-hint">年間売上換算：<strong id="hintAnnualRev">600,000</strong> 円</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>🤖 AIサブスク・ツール・サーバー経費（月額）</span>
+              <span class="control-val" id="valAiExp">4,500 円/月</span>
+            </div>
+            <input type="range" id="rngAiExp" min="0" max="50000" step="500" value="4500" oninput="calcTax()" />
+            <div class="control-hint">例：Gemini / Claude / ChatGPT / Suno / クラウド等の合計</div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>🔌 自宅ネット回線・電気代・PC等の按分経費（月額）</span>
+              <span class="control-val" id="valHomeExp">8,000 円/月</span>
+            </div>
+            <input type="range" id="rngHomeExp" min="0" max="80000" step="1000" value="8000" oninput="calcTax()" />
+            <div class="control-hint">在宅作業で使っている割合（30〜50%等）を経費として引き算できます</div>
+          </div>
+        </div>
+
+        <!-- 右カラム：逆算結果 ＋ アフィリエイト自動提案 -->
+        <div class="card">
+          <h2>📊 逆算診断結果（あなたの非課税余裕枠）</h2>
+          <p class="card-lead">
+            【モデル07逆算式】課税される利益 ＝ 年間売上 − 年間経費合計
+          </p>
+
+          <div class="result-hero">
+            <span class="result-status-badge status-safe" id="taxStatusBadge">✅ 所得税 0円（完全非課税ゾーン！）</span>
+            <div style="font-size:0.85rem; color:var(--text-sub);">経費を引き算した後の「年間の課税対象利益（所得）」</div>
+            <div class="result-big-number" id="resNetIncome">450,000 円</div>
+            <div id="resBufferText" style="font-size:0.92rem; color:#a7f3d0; font-weight:700;">
+              あと年間 500,000 円（月 +41,600円）多く稼いでも所得税は 0円 です！
+            </div>
+          </div>
+
+          <div class="formula-box" id="taxFormulaBreakdown">
+            ・年間売上合計：<strong>600,000 円</strong><br>
+            ・年間経費引き算：<strong>−150,000 円</strong>（これだけで年間約1.5万〜3万円の節税効果！）<br>
+            ・非課税リミット上限：<strong>950,000 円</strong>（令和7〜8年 基礎控除基準）
+          </div>
+
+          <div class="affiliate-section-title">
+            💡 診断結果から逆算した「今すぐ使える無料・必須ツール」
+          </div>
+          <div id="taxOffersContainer"></div>
+        </div>
+      </div>
+
+      <article class="seo-article">
+        <h3>なぜ「売上」ではなく「引き算（経費の逆算）」を知っている人だけが得をするのか？</h3>
+        <p>
+          在宅ワークやAIを使った個人の収益化で一番多い誤解が、「年間20万円（または専業なら95万円）を1円でも超えたら税金がガッツリ取られる」という思い込みです。実は日本の税制では、売上（入ってきたお金）そのものではなく、そこから<strong>「売上を作るためにかかったAIサブスク代・通信費・電気代・PC周辺機器代」を引き算した後の『所得（利益）』</strong>で判定されます。
+        </p>
+        <p>
+          つまり、日頃からレシートやクレカ明細を無料のクラウド会計ソフトに連携して「引き算できる経費メモリ」を自動で貯めておくだけで、非課税で手元に残せる現金を最大化できるのです。
+        </p>
+      </article>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 🎧 ツール②：Web Audio ハイレゾ周波数＆イヤホン解像度逆算チェッカー -->
+    <!-- ================================================================== -->
+    <section id="panel-audio" class="tool-panel">
+      <div class="calc-grid">
+        <div class="card">
+          <h2>🎧 32bit Web Audio 周波数・解像度テスト</h2>
+          <p class="card-lead">
+            あなたのイヤホンやスマホ・PCが「本来の極低音（重低音）〜超高音（倍音・空気感）」を濁らずに出せているか、ブラウザ内蔵の純粋正弦波ジェネレーターで今すぐ実測できます。
+          </p>
+
+          <canvas id="audioCanvas" width="520" height="170"></canvas>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>🎚️ テスト周波数スライダー (20Hz 〜 18,000Hz)</span>
+              <span class="control-val" id="valFreq">440 Hz (基準音 A4)</span>
+            </div>
+            <input type="range" id="rngFreq" min="20" max="18000" step="10" value="440" oninput="updateFreq(this.value)" />
+            <div class="control-hint" id="freqZoneHint">中音域：ボーカルやメイン楽器の中心帯域です</div>
+          </div>
+
+          <div class="freq-preset-grid">
+            <button class="freq-btn" onclick="playPresetFreq(35, '極低音 35Hz (サブベース性能チェック)')">🔊 35Hz 極低音</button>
+            <button class="freq-btn" onclick="playPresetFreq(100, '低音 100Hz (バスドラムの輪郭)')">🥁 100Hz 低音</button>
+            <button class="freq-btn" onclick="playPresetFreq(1000, '中音 1kHz (ボーカルの明瞭度)')">🎤 1kHz 基準</button>
+            <button class="freq-btn" onclick="playPresetFreq(8000, '高音 8kHz (シンバルの煌めき)')">✨ 8kHz 高音</button>
+            <button class="freq-btn" onclick="playPresetFreq(14000, '超高音 14kHz (ハイレゾ空気感・モスキート帯域)')">🦇 14kHz 空気感</button>
+            <button class="freq-btn" style="border-color:var(--accent-rose); color:#fda4af;" onclick="stopAudioTest()">⏹️ テスト音を停止</button>
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>🔊 テスト音量（ヘッドルーム安全設計）</span>
+              <span class="control-val" id="valVol">25 %</span>
+            </div>
+            <input type="range" id="rngVol" min="1" max="80" value="25" oninput="updateVol(this.value)" />
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>🔍 音響スペックの「引き算」診断＆おすすめ構成</h2>
+          <p class="card-lead">
+            「良い音」とは、イコライザーで無理に盛ることではなく、<strong>「Bluetooth圧縮や安物ミキサーによる音の劣化（ノイズメモリ）を引き算して、原音を直通させること」</strong>で生まれます。
+          </p>
+
+          <div class="formula-box">
+            <strong>【35Hz と 14,000Hz が小さく・曇って聴こえた方へ】</strong><br>
+            ワイヤレス（Bluetooth）環境や圧縮音源では、35Hz以下の深い沈み込みと14kHz以上の倍音がカットされやすくなります。<strong>「3.5mm有線モニターイヤホン直挿し × ロスレス音源」</strong>に変えるだけで、同じスマホ・PCでも別次元の生々しい音に覚醒します。
+          </div>
+
+          <div class="affiliate-section-title">
+            🎧 原音の解像度を100%引き出すベストセラー機器＆音源
+          </div>
+          <div id="audioOffersContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 🤖 ツール③：AIサブスク＆作業時短「元が取れるか」ROI逆算シミュレーター -->
+    <!-- ================================================================== -->
+    <section id="panel-ai" class="tool-panel">
+      <div class="calc-grid">
+        <div class="card">
+          <h2>🤖 AIサブスク＆自動化「損益分岐点」逆算機</h2>
+          <p class="card-lead">
+            月額3,000円〜4,500円のAIサブスク（Google AI Pro / Claude / ChatGPT等）は高いのか？ あなたがAIで浮かせた時間から「実質いくら黒字になっているか」を1秒で逆算します。
+          </p>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>💳 AIサブスクの月額合計コスト</span>
+              <span class="control-val" id="valAiCost">3,000 円/月</span>
+            </div>
+            <input type="range" id="rngAiCost" min="0" max="30000" step="500" value="3000" oninput="calcAiRoi()" />
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>⏱️ AIを使って1日に短縮・自動化できる作業時間</span>
+              <span class="control-val" id="valSavedMin">45 分/日</span>
+            </div>
+            <input type="range" id="rngSavedMin" min="5" max="240" step="5" value="45" oninput="calcAiRoi()" />
+          </div>
+
+          <div class="control-group">
+            <div class="control-header">
+              <span>💎 あなたの時間の価値（時給換算）</span>
+              <span class="control-val" id="valHourlyWage">1,500 円/時間</span>
+            </div>
+            <input type="range" id="rngHourlyWage" min="1000" max="10000" step="250" value="1500" oninput="calcAiRoi()" />
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>📈 AI投資の逆算リターン診断</h2>
+          <div class="result-hero">
+            <span class="result-status-badge status-safe" id="aiRoiBadge">🔥 月間 +30,750 円分の時間黒字！</span>
+            <div style="font-size:0.85rem; color:var(--text-sub);">サブスク代を引き算した後の「純粋な毎月のお得額」</div>
+            <div class="result-big-number" id="resAiNetGain">+30,750 円/月</div>
+            <div id="resAiBreakeven" style="font-size:0.92rem; color:#a7f3d0; font-weight:700;">
+              毎月たった「2時間（1日4分）」使うだけでサブスク代の元が100%取れます！
+            </div>
+          </div>
+
+          <div class="affiliate-section-title">
+            ⚡ AI時代の在宅環境をさらに快適にする厳選アイテム
+          </div>
+          <div id="aiOffersContainer"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ⚙️ オーナー（勇介さん）用ガイドモーダル -->
+  <div class="modal-overlay" id="ownerModal">
+    <div class="modal-box">
+      <h2 style="margin-bottom:12px; color:var(--accent-cyan);">👑 勇介さん専用：完全おまかせ収益化ガイド</h2>
+      <p style="font-size:0.9rem; color:#d1d5db; margin-bottom:14px;">
+        このサイト（<code>C:\Users\yusuk\Affiliate_Nexus_Portal</code>）は、すでに3つの実用Webツールとアフィリエイト提案エンジンが合体した状態で完成しています！
+      </p>
+      <h3 style="font-size:1rem; color:#34d399; margin-bottom:6px;">Step 1：自分のアフィリエイトリンクに変えるには？</h3>
+      <p style="font-size:0.86rem; color:var(--text-sub);">
+        A8.net・もしもアフィリエイト・Amazonアソシエイトの無料登録が終わったら、私（Antigravity）に<strong>「このリンクを貼って！」とチャットで投げるだけ</strong>でOKです（私が自動で <code>affiliate_config.js</code> を書き換えます）。
+      </p>
+      <div class="code-snippet">
+        フォルダ場所: C:\Users\yusuk\Affiliate_Nexus_Portal\<br>
+        設定ファイル: affiliate_config.js （ここを1箇所変えるだけで全ページ一括反映！）
+      </div>
+
+      <h3 style="font-size:1rem; color:#34d399; margin-bottom:6px;">Step 2：新しいツールや記事を増やしたい時は？</h3>
+      <p style="font-size:0.86rem; color:var(--text-sub); margin-bottom:18px;">
+        勇介さんが自分で記事を書く必要はゼロです！私に<strong>「〇〇を逆算するツールも追加しといて！」</strong>と一言言うだけで、私が勝手にコードを書き足してサイトを進化させます。
+      </p>
+      <button class="offer-cta" onclick="closeOwnerModal()" style="cursor:pointer; border:none;">閉じる</button>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. アフィリエイトカードの自動レンダリング ＆ クリック計測
+    // =========================================================================
+    let clickCount = parseInt(localStorage.getItem('gyakusan_clicks') || '0', 10);
+    let potentialYen = parseInt(localStorage.getItem('gyakusan_potential') || '0', 10);
+
+    function updateOwnerStatsUI() {
+      document.getElementById('statClicks').textContent = clickCount;
+      document.getElementById('statPotential').textContent = '¥' + potentialYen.toLocaleString();
+    }
+
+    function recordAffiliateClick(offerId) {
+      clickCount += 1;
+      potentialYen += 1500; // テストクリックあたりの期待値シミュレーション
+      localStorage.setItem('gyakusan_clicks', clickCount);
+      localStorage.setItem('gyakusan_potential', potentialYen);
+      updateOwnerStatsUI();
+    }
+
+    function renderOffers() {
+      const cfg = window.AFFILIATE_CONFIG;
+      if (!cfg || !cfg.offers) return;
+
+      const containers = {
+        tax: document.getElementById('taxOffersContainer'),
+        audio: document.getElementById('audioOffersContainer'),
+        ai: document.getElementById('aiOffersContainer')
+      };
+
+      Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
+
+      Object.values(cfg.offers).forEach(offer => {
+        const target = containers[offer.category];
+        if (!target) return;
+
+        let finalUrl = offer.url;
+        if (finalUrl.includes('amazon.co.jp') && cfg.amazonAssociateTag) {
+          const sep = finalUrl.includes('?') ? '&' : '?';
+          finalUrl = `${finalUrl}${sep}tag=${encodeURIComponent(cfg.amazonAssociateTag)}`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'offer-card';
+        card.innerHTML = `
+          <span class="offer-owner-tag owner-only-el">報酬目安: ${offer.estReward}</span>
+          <span class="offer-badge">${offer.badge}</span>
+          <div class="offer-title">${offer.title}</div>
+          <div class="offer-desc">${offer.description}</div>
+          <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="offer-cta" onclick="recordAffiliateClick('${offer.id}')">
+            ${offer.ctaText}
+          </a>
+        `;
+        target.appendChild(card);
+      });
+    }
+
+    // =========================================================================
+    // 2. ツール①：在宅・副業の税金＆非課税ライン逆算ロジック
+    // =========================================================================
+    let currentTaxMode = 'solo'; // 'solo' (基礎控除95万) or 'side' (副業20万)
+
+    function setTaxMode(mode) {
+      currentTaxMode = mode;
+      document.getElementById('modeSolo').classList.toggle('selected', mode === 'solo');
+      document.getElementById('modeSide').classList.toggle('selected', mode === 'side');
+      calcTax();
+    }
+
+    function calcTax() {
+      const monthlyRev = parseInt(document.getElementById('rngMonthlyRev').value, 10);
+      const aiExp = parseInt(document.getElementById('rngAiExp').value, 10);
+      const homeExp = parseInt(document.getElementById('rngHomeExp').value, 10);
+
+      document.getElementById('valMonthlyRev').textContent = monthlyRev.toLocaleString() + ' 円/月';
+      document.getElementById('valAiExp').textContent = aiExp.toLocaleString() + ' 円/月';
+      document.getElementById('valHomeExp').textContent = homeExp.toLocaleString() + ' 円/月';
+
+      const annualRev = monthlyRev * 12;
+      const annualExp = (aiExp + homeExp) * 12;
+      const netIncome = Math.max(0, annualRev - annualExp);
+
+      document.getElementById('hintAnnualRev').textContent = annualRev.toLocaleString();
+      document.getElementById('resNetIncome').textContent = netIncome.toLocaleString() + ' 円 / 年';
+
+      const limit = currentTaxMode === 'solo' ? 950000 : 200000;
+      const limitLabel = currentTaxMode === 'solo'
+        ? '950,000 円（個人・在宅専業 基礎控除非課税枠）'
+        : '200,000 円（給与あり副業 所得税申告不要枠）';
+
+      const badge = document.getElementById('taxStatusBadge');
+      const bufferEl = document.getElementById('resBufferText');
+
+      if (netIncome <= limit) {
+        const remaining = limit - netIncome;
+        const remMonthly = Math.floor(remaining / 12);
+        badge.className = 'result-status-badge status-safe';
+        badge.textContent = '✅ 所得税 0円（完全非課税ゾーン！）';
+        bufferEl.style.color = '#a7f3d0';
+        bufferEl.textContent = `あと年間 ${remaining.toLocaleString()} 円（月 +${remMonthly.toLocaleString()}円）多く稼いでも所得税は 0円 です！`;
+      } else {
+        const over = netIncome - limit;
+        const estTax = Math.floor(over * 0.05);
+        badge.className = 'result-status-badge status-warn';
+        badge.textContent = `⚠️ 非課税枠を +${over.toLocaleString()}円 超過（確定申告で控除活用推奨）`;
+        bufferEl.style.color = '#fde68a';
+        bufferEl.textContent = `青色申告（最大65万円控除）や経費の計上漏れを見直せば、再び所得税 0円 に戻せる圏内です！（概算所得税：約 ${estTax.toLocaleString()}円/年）`;
+      }
+
+      document.getElementById('taxFormulaBreakdown').innerHTML = `
+        ・年間売上合計：<strong>${annualRev.toLocaleString()} 円</strong><br>
+        ・年間経費の引き算：<strong>−${annualExp.toLocaleString()} 円</strong>（AI代・通信費・電気代按分）<br>
+        ・あなたの非課税上限ライン：<strong>${limitLabel}</strong>
+      `;
+    }
+
+    // =========================================================================
+    // 3. ツール②：Web Audio API 32bit 周波数ジェネレーター ＆ 波形ビジュアライザー
+    // =========================================================================
+    let audioCtx = null;
+    let oscNode = null;
+    let gainNode = null;
+    let isPlayingAudio = false;
+    let currentFreq = 440;
+    let animPhase = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function startTone(freq) {
+      initAudio();
+      if (!oscNode) {
+        oscNode = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+        oscNode.type = 'sine';
+        oscNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        const vol = parseInt(document.getElementById('rngVol').value, 10) / 100;
+        gainNode.gain.setValueAtTime(vol * 0.35, audioCtx.currentTime);
+        oscNode.start();
+      }
+      oscNode.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.015);
+      isPlayingAudio = true;
+    }
+
+    function stopAudioTest() {
+      if (oscNode) {
+        oscNode.stop();
+        oscNode.disconnect();
+        oscNode = null;
+      }
+      isPlayingAudio = false;
+    }
+
+    function updateFreq(val) {
+      currentFreq = parseInt(val, 10);
+      document.getElementById('valFreq').textContent = `${currentFreq.toLocaleString()} Hz`;
+      let hint = '';
+      if (currentFreq < 60) hint = '極低音（サブベース）：高性能な有線イヤホンやサブウーファーでのみ空気の振動として聴こえます';
+      else if (currentFreq < 250) hint = '低音域：ベースやバスドラムの迫力を作る土台の帯域です';
+      else if (currentFreq < 4000) hint = '中音域：ボーカルや楽器のメロディが最も集中する帯域です';
+      else if (currentFreq < 12000) hint = '高音域：シンバルやアコースティックギターの繊細な煌めきを決める帯域です';
+      else hint = '超高音（ハイレゾ・空気感領域）：圧縮音源や安価な無線イヤホンでは消えやすい微細倍音です';
+      document.getElementById('freqZoneHint').textContent = hint;
+
+      if (isPlayingAudio && oscNode) {
+        oscNode.frequency.setTargetAtTime(currentFreq, audioCtx.currentTime, 0.015);
+      }
+    }
+
+    function playPresetFreq(freq, label) {
+      document.getElementById('rngFreq').value = freq;
+      updateFreq(freq);
+      document.getElementById('valFreq').textContent = label;
+      startTone(freq);
+    }
+
+    function updateVol(val) {
+      document.getElementById('valVol').textContent = `${val} %`;
+      if (gainNode && audioCtx) {
+        gainNode.gain.setTargetAtTime((val / 100) * 0.35, audioCtx.currentTime, 0.02);
+      }
+    }
+
+    function drawAudioWave() {
+      const canvas = document.getElementById('audioCanvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.fillStyle = '#050811';
+        ctx.fillRect(0, 0, w, h);
+
+        // 中心の「1/2 基準ライン」
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        ctx.beginPath();
+        ctx.moveTo(0, h / 2);
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+
+        // 波形描画
+        ctx.strokeStyle = isPlayingAudio ? '#06b6d4' : '#4b5563';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        const cycles = Math.max(1.5, Math.min(28, Math.log10(currentFreq) * 6));
+        const amp = isPlayingAudio ? (h * 0.36) : (h * 0.1);
+        for (let x = 0; x < w; x++) {
+          const y = h / 2 + Math.sin((x / w) * Math.PI * 2 * cycles + animPhase) * amp;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        if (isPlayingAudio) animPhase += 0.18;
+      }
+      requestAnimationFrame(drawAudioWave);
+    }
+
+    // =========================================================================
+    // 4. ツール③：AIサブスク ROI 逆算ロジック
+    // =========================================================================
+    function calcAiRoi() {
+      const cost = parseInt(document.getElementById('rngAiCost').value, 10);
+      const savedMin = parseInt(document.getElementById('rngSavedMin').value, 10);
+      const wage = parseInt(document.getElementById('rngHourlyWage').value, 10);
+
+      document.getElementById('valAiCost').textContent = cost.toLocaleString() + ' 円/月';
+      document.getElementById('valSavedMin').textContent = savedMin + ' 分/日';
+      document.getElementById('valHourlyWage').textContent = wage.toLocaleString() + ' 円/時間';
+
+      const monthlySavedHours = (savedMin * 30) / 60;
+      const grossValue = Math.round(monthlySavedHours * wage);
+      const netGain = grossValue - cost;
+      const breakEvenHours = cost > 0 ? (cost / wage).toFixed(1) : 0;
+
+      document.getElementById('resAiNetGain').textContent = (netGain >= 0 ? '+' : '') + netGain.toLocaleString() + ' 円/月';
+      document.getElementById('aiRoiBadge').textContent = `🔥 月間 ${monthlySavedHours.toFixed(1)} 時間の自由時間を創出！`;
+      document.getElementById('resAiBreakeven').textContent =
+        `毎月たった「${breakEvenHours} 時間」AIに作業を任せるだけで、サブスク代の元が100%取れます！`;
+    }
+
+    // =========================================================================
+    // 5. タブ切替 ＆ オーナーUI制御
+    // =========================================================================
+    function switchTab(tabId, btnEl) {
+      if (tabId !== 'audio') stopAudioTest();
+      document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + tabId).classList.add('active');
+      btnEl.classList.add('active');
+    }
+
+    let ownerModeVisible = true;
+    function toggleOwnerMode() {
+      ownerModeVisible = !ownerModeVisible;
+      document.querySelectorAll('.owner-only-el').forEach(el => {
+        el.style.display = ownerModeVisible ? 'inline-block' : 'none';
+      });
+    }
+
+    function openOwnerModal() {
+      document.getElementById('ownerModal').classList.add('open');
+    }
+    function closeOwnerModal() {
+      document.getElementById('ownerModal').classList.remove('open');
+    }
+
+    // 初期化 ＆ 0秒リアルタイムクラウド来客カウンター送信
+    window.addEventListener('DOMContentLoaded', () => {
+      renderOffers();
+      updateOwnerStatsUI();
+      calcTax();
+      calcAiRoi();
+      drawAudioWave();
+
+      // Webポータル訪問を0秒リアルタイム集計サーバーへ通知
+      fetch('https://abacus.jasoncameron.dev/hit/secure00110-ai-medaparts/web-portal').catch(() => {});
+    });
+  </script>
+</body>
+</html>

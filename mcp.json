@@ -1,0 +1,28 @@
+{
+  "name": "ai-geoparts-store",
+  "version": "2.0.0",
+  "description": "AI GEO-PARTS (Geometric Emergence & Ontology Parts): 6-Slot Modular AI Agent Parts & Dual MCP Servers based on Model-05 (Singularity Attractor), Model-06 (Origami HoloSphere), and Model-07 (Dimensional Memory Subtraction).",
+  "homepage": "https://secure00110.github.io/ai-geoparts-store/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secure00110/ai-geoparts-store.git"
+  },
+  "x402": {
+    "protocol": "x402-v1",
+    "payment_address_evm": "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02",
+    "networks": ["base-mainnet", "polygon-mainnet", "ethereum-mainnet"],
+    "asset": "USDC"
+  },
+  "mcpServers": {
+    "geoparts-right-arm-security": {
+      "command": "python",
+      "args": ["ARM_ReverseCalc_MCP_Server.py"],
+      "description": "GEO-PARTS Right Arm MCP: OS security baseline subtraction and deep human need deconstruction."
+    },
+    "geoparts-left-arm-market-audio": {
+      "command": "python",
+      "args": ["LEFT_ARM_Market_Audio_Reverse_MCP.py"],
+      "description": "GEO-PARTS Left Arm MCP: Financial market 1/2 gravity spine & prime wall calculator + 32-bit Hi-Res audio purity engine."
+    }
+  }
+}

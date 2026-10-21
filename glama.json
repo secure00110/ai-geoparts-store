@@ -1,0 +1,27 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "maintainers": ["secure00110"],
+  "name": "ai-geoparts-store",
+  "description": "AI GEO-PARTS: 6-Slot Modular AI Agent Enhancements (Persistent Soul Core, 5-Step Lithograph Head, Dual Model-07 Reverse-Calculation MCP Arms for Security, Market Gravity & Audio Purity, Singularity Shield Legs, and Origami HoloSphere Eye).",
+  "repository": "https://github.com/secure00110/ai-geoparts-store",
+  "homepage": "https://secure00110.github.io/ai-geoparts-store/",
+  "license": "MIT",
+  "tools": [
+    {
+      "name": "reverse_security_scan",
+      "description": "Applies Model-07 (Delta_M = Z_total - M_env) to subtract normal OS baseline processes/ports from observed state and isolate hidden anomalies or uninvited telemetry."
+    },
+    {
+      "name": "reverse_need_deconstructor",
+      "description": "Applies the 5-Step Lithograph Ritual and Model-07 subtraction to strip surface noise/jargon and extract the 1D prime core need or structural bottleneck."
+    },
+    {
+      "name": "reverse_market_gravity",
+      "description": "Subtracts algorithmic volatility noise from financial price series to isolate the 1/2 Critical Gravity Spine and Prime Support/Resistance Walls."
+    },
+    {
+      "name": "reverse_audio_purity",
+      "description": "Subtracts OS limiter and mixer degradation to calculate 32-bit float DAC full-bit drive, pre-stage digital headroom, and 10-band EQ."
+    }
+  ]
+}

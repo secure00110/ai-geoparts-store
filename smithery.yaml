@@ -1,0 +1,12 @@
+# Smithery.ai MCP Automated Crawler Manifest
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+  commandFunction:
+    |-
+    (config) => ({
+      command: 'python',
+      args: ['ARM_ReverseCalc_MCP_Server.py']
+    })

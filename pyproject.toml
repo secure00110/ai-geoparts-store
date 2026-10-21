@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-geoparts-mcp-server"
+version = "2.0.0"
+description = "AI GEO-PARTS: 6-Slot Modular AI Agent Cognitive & MCP Parts (Model-07 Reverse-Calculation, Security Subtraction, Market Gravity & 5-Step Lithograph Ritual)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "secure00110 (Yusuke x Antigravity Lab)" }
+]
+keywords = ["mcp", "mcp-server", "model-context-protocol", "ai-agents", "agent-skills", "geoparts", "x402", "cognitive-architecture", "security-scanner"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+[project.urls]
+Homepage = "https://secure00110.github.io/ai-geoparts-store/"
+Repository = "https://github.com/secure00110/ai-geoparts-store"
