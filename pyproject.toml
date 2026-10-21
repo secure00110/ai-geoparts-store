@@ -12,7 +12,7 @@ license = { text = "MIT" }
 authors = [
   { name = "secure00110 (Yusuke x Antigravity Lab)" }
 ]
-keywords = ["mcp", "mcp-server", "model-context-protocol", "ai-agents", "agent-skills", "geoparts", "x402", "cognitive-architecture", "security-scanner"]
+keywords = ["mcp", "mcp-server", "model-context-protocol", "ai-agents", "agent-skills", "geoparts","cognitive-architecture", "security-scanner"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",

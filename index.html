@@ -481,7 +481,7 @@
 <body>
 
   <!-- 👑 オーナー（勇介さん）専用の管理モニターバー（公開時はワンクリックで非表示にもできます） -->
-  <div class="owner-bar" id="ownerBar">
+  <div class="owner-bar" id="ownerBar" style="display:none;">
     <div>
       <span class="owner-badge">👑 オーナー管理モード (勇介専用)</span>
       <span>『逆算ラボ』自動収益プロトタイプ稼働中（サーバー維持費：<strong>0円</strong>）</span>
@@ -727,6 +727,13 @@
 
   </main>
 
+  <!-- 広告表記（景品表示法のステマ規制対応）・免責事項 -->
+  <footer style="max-width:960px; margin:32px auto 24px; padding:0 16px; font-size:0.8rem; color:var(--text-sub); line-height:1.7;">
+    <p>【広告表記】当サイトはアフィリエイト広告（PR）を利用しています。「PR」と表示された紹介リンクから商品・サービスをお申し込みいただくと、運営者に報酬が支払われる場合があります。</p>
+    <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p>
+    <p>【免責事項】各ツールの計算結果は一般的な目安であり、税務・投資・医療等の個別の助言ではありません。税額や制度の適用は最新の公式情報または税理士等の専門家にご確認ください。</p>
+  </footer>
+
   <!-- ⚙️ オーナー（勇介さん）用ガイドモーダル -->
   <div class="modal-overlay" id="ownerModal">
     <div class="modal-box">
@@ -796,8 +803,8 @@
         const card = document.createElement('div');
         card.className = 'offer-card';
         card.innerHTML = `
-          <span class="offer-owner-tag owner-only-el">報酬目安: ${offer.estReward}</span>
-          <span class="offer-badge">${offer.badge}</span>
+          <span class="offer-owner-tag owner-only-el" style="display:none;">報酬目安: ${offer.estReward}</span>
+          <span class="offer-badge">PR｜${offer.badge}</span>
           <div class="offer-title">${offer.title}</div>
           <div class="offer-desc">${offer.description}</div>
           <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="offer-cta" onclick="recordAffiliateClick('${offer.id}')">
@@ -1009,7 +1016,7 @@
       btnEl.classList.add('active');
     }
 
-    let ownerModeVisible = true;
+    let ownerModeVisible = false;
     function toggleOwnerMode() {
       ownerModeVisible = !ownerModeVisible;
       document.querySelectorAll('.owner-only-el').forEach(el => {

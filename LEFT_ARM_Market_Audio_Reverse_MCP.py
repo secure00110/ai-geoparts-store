@@ -7,7 +7,6 @@
 Brand     : AI GEO-PARTS (Geometric Emergence & Ontology Parts)
 Edition   : 🆓 LITE TRIAL EDITION (無料お試し体験版)
 Full PRO  : https://secure00110.github.io/ai-geoparts-store/shop.html
-Payment   : x402-v1 Ready (0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02)
 ================================================================================
 """
 
@@ -16,7 +15,6 @@ import json
 from typing import List, Dict, Any
 
 SHOP_URL = "https://secure00110.github.io/ai-geoparts-store/shop.html"
-WALLET_ADDR = "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02"
 
 
 def reverse_market_gravity_lite(symbol: str, prices: List[float]) -> Dict[str, Any]:
@@ -32,8 +30,7 @@ def reverse_market_gravity_lite(symbol: str, prices: List[float]) -> Dict[str, A
             "🔒 ΔM 素数の壁（機関投資家の真の利食いレジスタンスライン）：PRO版で解放",
             "🔒 0〜1 位相回転（Void 底値拾いゾーン ＆ Surge 天井利食いゾーン）：PRO版で解放"
         ],
-        "unlock_pro_url": SHOP_URL,
-        "x402_wallet": WALLET_ADDR
+        "unlock_pro_url": SHOP_URL
     }
 
 
@@ -47,8 +44,7 @@ def reverse_audio_purity_lite(device_type: str = "wired_hi_res", genre: str = "e
             "🔒 Android / Windows 音潰しリミッター・干渉プロセス完全停止リスト：PRO版で解放",
             "🔒 192kHz/32bit float 直通 10バンド黄金EQ周波数レシピ：PRO版で解放"
         ],
-        "unlock_pro_url": SHOP_URL,
-        "x402_wallet": WALLET_ADDR
+        "unlock_pro_url": SHOP_URL
     }
 
 

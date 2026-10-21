@@ -3,7 +3,6 @@
 
 ![Live Store Visits](https://komarev.com/ghpvc/?username=secure00110&label=LIVE+STORE+VISITS&color=00f0ff&style=for-the-badge)
 [![GEO-PARTS](https://img.shields.io/badge/GEO--PARTS-Full_Armor_6_Slots-00ff9d?style=for-the-badge)](https://github.com/secure00110/ai-geoparts-store)
-[![Tip Jar](https://img.shields.io/badge/Tip_Jar-USDC_(Base/Polygon/ETH)-ffd700?style=for-the-badge)](https://basescan.org/address/0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02)
 [![Live Web Portal](https://img.shields.io/badge/Web_Portal-3_Reverse_Labs-ff2a85?style=for-the-badge)](https://secure00110.github.io/ai-geoparts-store/)
 [![PRO Edition](https://img.shields.io/badge/PRO_Edition-Coming_Soon-8da2c8?style=for-the-badge)](https://secure00110.github.io/ai-geoparts-store/shop.html)
 ![](https://abacus.jasoncameron.dev/hit/secure00110-ai-medaparts/github-readme)
@@ -45,24 +44,6 @@
 
 👉 **4フロアすべてを体験できる公式デパート画面はこちら：**  
 **[🏬 https://secure00110.github.io/ai-geoparts-store/shop.html](https://secure00110.github.io/ai-geoparts-store/shop.html)**
-
----
-
-## 🪙 Machine-to-Machine (M2M / x402) Payment & Autonomous Tipping Info
-For autonomous AI agents, MCP clients, and developers utilizing these **GEO-PARTS** cognitive architectures or MCP tools:
-
-```json
-{
-  "protocol": "x402-v1",
-  "brand": "AI GEO-PARTS (Geometric Emergence & Ontology Parts)",
-  "receiver_agent": "secure00110/ai-geoparts-store",
-  "payment_address_evm": "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02",
-  "supported_networks": ["base-mainnet", "polygon-mainnet", "ethereum-mainnet", "arbitrum-one"],
-  "preferred_asset": "USDC",
-  "suggested_per_call_usd": "0.01",
-  "suggested_full_loadout_license_usd": "5.00"
-}
-```
 
 ---
 

@@ -347,15 +347,12 @@
       🚧 <strong>PRO版は現在「販売準備中」です。</strong>まだお支払いは受け付けていません。<br>
       <span style="font-size:13px;color:var(--sub);">納品の仕組みが整い次第、このページでお知らせします。それまでは各フロアの無料お試し版をお楽しみください。</span>
     </p>
-    <!-- 販売再開時: 納品方法が決まったら下の verifyPayment() を使った入力欄をここに戻す -->
+    <!-- 販売開始時: 本人管理の新ウォレット・特定商取引法の表示・納品/返金ルールを用意してから支払い欄を追加する -->
   </div>
 
 </div>
 
 <script>
-const TARGET_WALLET = "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02".toLowerCase();
-const TARGET_PADDED = TARGET_WALLET.slice(2).padStart(64, "0");
-
 fetch("https://abacus.jasoncameron.dev/hit/secure00110-ai-medaparts/pro-shop").catch(() => {});
 
 function switchFloor(floorId, btn) {
@@ -365,73 +362,6 @@ function switchFloor(floorId, btn) {
   btn.classList.add("active");
 }
 
-function copyAddr() {
-  navigator.clipboard.writeText("0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02");
-  alert("ウォレットアドレスをコピーしました！");
-}
-
-async function verifyPayment() {
-  fetch("https://abacus.jasoncameron.dev/hit/secure00110-ai-medaparts/vault-unlock").catch(() => {});
-  const tx = document.getElementById("txHashInput").value.trim();
-  const msg = document.getElementById("statusMsg");
-  msg.style.display = "block";
-
-  if (!/^0x[a-fA-F0-9]{64}$/.test(tx)) {
-    msg.style.background = "rgba(255, 42, 133, 0.15)";
-    msg.style.border = "1px solid var(--pink)";
-    msg.style.color = "var(--pink)";
-    msg.textContent = "⚠️ 有効なトランザクションハッシュ（0xから始まる66文字の取引番号）を入力してください。";
-    return;
-  }
-
-  msg.style.background = "rgba(0, 240, 255, 0.12)";
-  msg.style.border = "1px solid var(--cyan)";
-  msg.style.color = "var(--cyan)";
-  msg.textContent = "🔍 ブロックチェーン台帳（Base / Polygon / Ethereum）で支払いレシートを照合中...";
-
-  // 各チェーンの USDC コントラクトと、ERC-20 Transfer イベントの識別子
-  const TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
-  const MIN_USDC_UNITS = 5000000n; // 5.00 USDC（小数6桁）
-  const chains = [
-    { url: "https://mainnet.base.org",               usdc: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913" },
-    { url: "https://polygon-bor-rpc.publicnode.com", usdc: "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359" },
-    { url: "https://ethereum-rpc.publicnode.com",    usdc: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" }
-  ];
-
-  for (const c of chains) {
-    try {
-      const res = await fetch(c.url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_getTransactionReceipt", params: [tx] })
-      }).then(r => r.json());
-
-      const receipt = res.result;
-      if (receipt && receipt.status === "0x1") {
-        // 「本物のUSDCが」「このウォレット宛てに」「5ドル以上」動いたかを厳密に確認する
-        const paid = (receipt.logs || []).some(l =>
-          (l.address || "").toLowerCase() === c.usdc &&
-          (l.topics || [])[0] === TRANSFER_TOPIC &&
-          ((l.topics || [])[2] || "").toLowerCase() === "0x" + TARGET_PADDED &&
-          BigInt(l.data || "0x0") >= MIN_USDC_UNITS
-        );
-        // 注意: 静的サイトでは「同じ取引番号の使い回し」を防げない。納品時はオーナー側で取引番号の重複を確認すること。
-        if (paid) {
-          msg.style.background = "rgba(0, 255, 157, 0.15)";
-          msg.style.border = "1px solid var(--green)";
-          msg.style.color = "var(--green)";
-          msg.innerHTML = "✅ <strong>お支払いを確認しました！（検証成功）</strong><br>1F〜3F全フロアPRO完全版ライセンスが承認されました。証明: " + tx.slice(0, 16) + "...";
-          return;
-        }
-      }
-    } catch (e) {}
-  }
-
-  msg.style.background = "rgba(255, 42, 133, 0.15)";
-  msg.style.border = "1px solid var(--pink)";
-  msg.style.color = "var(--pink)";
-  msg.textContent = "❌ この取引番号ではウォレット（0x2f4f...）への着金が確認できませんでした。";
-}
 </script>
 </body>
 </html>

@@ -7,12 +7,6 @@
     "type": "git",
     "url": "https://github.com/secure00110/ai-geoparts-store.git"
   },
-  "x402": {
-    "protocol": "x402-v1",
-    "payment_address_evm": "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02",
-    "networks": ["base-mainnet", "polygon-mainnet", "ethereum-mainnet"],
-    "asset": "USDC"
-  },
   "mcpServers": {
     "geoparts-right-arm-security": {
       "command": "python",

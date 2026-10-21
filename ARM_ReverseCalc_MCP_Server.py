@@ -7,7 +7,6 @@
 Brand     : AI GEO-PARTS (Geometric Emergence & Ontology Parts)
 Edition   : 🆓 LITE TRIAL EDITION (無料お試し体験版 - 1 Sample Output Limit)
 Full PRO  : https://secure00110.github.io/ai-geoparts-store/shop.html
-Payment   : x402-v1 Ready (0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02)
 ================================================================================
 """
 
@@ -16,7 +15,6 @@ import json
 import subprocess
 
 SHOP_URL = "https://secure00110.github.io/ai-geoparts-store/shop.html"
-WALLET_ADDR = "0x2f4f00bcebeb49df6ec991c4a9a2b92afdf0fb02"
 
 BASELINE_SAFE_PROCESSES = {
     "System", "Idle", "Registry", "smss.exe", "csrss.exe", "wininit.exe",
@@ -46,8 +44,7 @@ def weapon_right_arm_reverse_security_scan_lite():
             "🔒 Windows標準28プロセスの完全自動引き算ホワイトリスト（M_env）",
             "🔒 不審な裏通信・テレメトリの即時抽出エンジン"
         ],
-        "unlock_pro_url": SHOP_URL,
-        "x402_wallet": WALLET_ADDR
+        "unlock_pro_url": SHOP_URL
     }
 
 
@@ -65,8 +62,7 @@ def weapon_reverse_need_deconstructor_lite(problem_text: str):
             "🔒 レンズ4（自律重力アトラクター設計）：🔒 PRO版で解放",
             "🔒 レンズ5（第四の刻み：死角チェック＆70文字重ね石版）：🔒 PRO版で解放"
         ],
-        "unlock_pro_url": SHOP_URL,
-        "x402_wallet": WALLET_ADDR
+        "unlock_pro_url": SHOP_URL
     }
 
 
